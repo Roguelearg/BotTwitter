@@ -1,29 +1,6 @@
 require 'twitter'
 
 
-
-client = Twitter::REST::Client.new do |config|
-	config.consumer_key			= "hmSD6z6I2qk5EvZYjlWq7xPEk"
-	config.consumer_secret     	= "BDpiSEvrPpWfShukwXkPW6SkXnZO40j49JVE4gXri12p9Z2dOF"
-		config.access_token        	= "2401933712-8tOFfsX5XtLRl0i7BVbhxO66Zv1sg536XanJQKU"
-		config.access_token_secret 	= "Avm8woRmQeujdRnlrEJY7IZlheL9XMvQuysigpc8SMFGF"
-	end
-
-streamer = Twitter::Streaming::Client.new do |config|
-	config.consumer_key			= "hmSD6z6I2qk5EvZYjlWq7xPEk"
-	config.consumer_secret     	= "BDpiSEvrPpWfShukwXkPW6SkXnZO40j49JVE4gXri12p9Z2dOF"
-  	config.access_token        	= "2401933712-8tOFfsX5XtLRl0i7BVbhxO66Zv1sg536XanJQKU"
-  	config.access_token_secret 	= "Avm8woRmQeujdRnlrEJY7IZlheL9XMvQuysigpc8SMFGF"
-end
-
-
-t = Time.new.getlocal("+00:00")
-
-tweets = client.user_timeline("CNIL", count: 1)
-tweets.each { |tweet| puts "#{tweet.attrs}"}
-
-
-
 class Retweetbot
 
 	attr_reader :t
