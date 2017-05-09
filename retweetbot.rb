@@ -6,10 +6,10 @@ class Retweetbot
 	attr_reader :t
 	@@comptes = ["CNIL","LINCnil","virtualegis","actecil","PrivaticsInria","privacytechlaw","DPO_News"]
 	@@client = Twitter::REST::Client.new do |config|
-			config.consumer_key					= 
-			config.consumer_secret     	= 
-	  	config.access_token        	= "2401933712-8tOFfsX5XtLRl0i7BVbhxO66Zv1sg536XanJQKU"
-	  	config.access_token_secret 	= "Avm8woRmQeujdRnlrEJY7IZlheL9XMvQuysigpc8SMFGF"
+			config.consumer_key					=
+			config.consumer_secret     	=
+	  	config.access_token        	=
+	  	config.access_token_secret 	= 
 	end
 
 	#Retourne le temps en seconde entre le tweet choisi et l'heure actuelle
@@ -18,6 +18,14 @@ class Retweetbot
 		return @t - tweet.created_at
 
 	end
+
+	#Retourne le nombre de minutes dans le temps en seconde passer en paramètre
+	def nombreMinutes(temps)
+
+		return (temps/60).truncate(0)
+
+	end
+
 
 	#Retourne le nombre d'heures dans le temps en seconde passer en paramètre
 	def nombreHeure(temps)
@@ -50,19 +58,21 @@ class Retweetbot
 					if (nbreJours == 0 && nbreHeures > 0)
 						begin
 							@@client.retweet!(tweet)
-							puts "RT : nbre d'heures : #{nbreHeures}  temps : #{difTemps}"
+							puts "RT : nombre d'heures : #{nbreHeures}  auteur : #{compte}"
 						rescue
-							puts "déjà RT"
+							puts "déjà RT  auteur : #{compte}"
 						end
 					elsif nbreJours < 16 && nbreJours > 0
 						begin
 							@@client.retweet!(tweet)
-							puts "RT2 : nbre d'heures : #{nbreHeures}  temps : #{difTemps}"
+							puts "RT2 : nombre de jours : #{nbreJours}  auteur : #{compte}"
 						rescue
-							puts "déjà RT2"
+							puts "déjà RT2  auteur : #{compte}"
 						end
-					else
-	 					puts nbreJours
+					elsif nbreJours > 0
+	 					puts "nombre de jours : #{nbreJours}  auteur : #{compte}"
+					elsif nbreJours == 0
+						puts "nombre de minutes : #{nombreMinutes(difTemps)}  auteur : #{compte}"
 					end
 				end
 			end
