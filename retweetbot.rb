@@ -1,6 +1,7 @@
 require 'twitter'
 
 
+
 class Retweetbot
 
 	attr_reader :t
@@ -41,6 +42,19 @@ class Retweetbot
 
 	end
 
+	def recuperationURLs(tweet)
+		tweet.urls.each do |url|
+			puts "#{url.expanded_url}"
+		end
+	end
+
+	def recuperationHashtags(tweet)
+		tweet.hashtags.each do |hashtag|
+			puts "#{hashtag.text}"
+		end
+	end
+
+
  #Récupère les x derniers tweets de comptes twitter définis par la liste contenue dans la variable comptes
  #La variable nbreTweetRecup définie le nombre de tweets à récupérer
 	def bot (nbreTweetRecup)
@@ -51,7 +65,7 @@ class Retweetbot
 
 
 			tweets.each do |tweet|
-				if tweet.user_mentions.length == 0																								#S'assure que ce n'est pas un retweet
+				if ((tweet.in_reply_to_screen_name == "virtualegis" || tweet.in_reply_to_screen_name.nil?) && tweet.text[0, 2] != "RT" )																				#S'assure que ce n'est pas un retweet
 					difTemps = calculDifTemps(tweet)
 					nbreJours = nombreJour(difTemps)
 					nbreHeures = nombreHeure(difTemps)
