@@ -1,16 +1,14 @@
 require 'twitter'
 
-
-
 class Retweetbot
 
 	attr_reader :t
 	@@comptes = ["CNIL","LINCnil","virtualegis","actecil","PrivaticsInria","privacytechlaw","DPO_News"]
 	@@client = Twitter::REST::Client.new do |config|
-			config.consumer_key					=
-			config.consumer_secret     	=
-	  	config.access_token        	=
-	  	config.access_token_secret 	= 
+			config.consumer_key					= "0ij5l85K7uY9s2sOWvOW6zYWM"
+			config.consumer_secret     	= "i0Ew0rrUoW7GBzk48KvzVUT1cdT2TaFDfycM4bKkbgeQ7f2POg"
+	  	config.access_token        	= "2401933712-8tOFfsX5XtLRl0i7BVbhxO66Zv1sg536XanJQKU"
+	  	config.access_token_secret 	= "Avm8woRmQeujdRnlrEJY7IZlheL9XMvQuysigpc8SMFGF"
 	end
 
 	#Retourne le temps en seconde entre le tweet choisi et l'heure actuelle
@@ -42,16 +40,24 @@ class Retweetbot
 
 	end
 
+	#Extrait les URLs présents dans le texte du tweet et les affiche
 	def recuperationURLs(tweet)
+		urls = []
 		tweet.urls.each do |url|
-			puts "#{url.expanded_url}"
+			if !url.display_url.include? "twitter.com"
+				urls.push(url.expanded_url)
+			end
 		end
+		return urls
 	end
 
+	#Extrait les Hashtags présents dans le texte du tweet et les affiche
 	def recuperationHashtags(tweet)
+		hashtags = []
 		tweet.hashtags.each do |hashtag|
-			puts "#{hashtag.text}"
+			hashtags.push(hashtag.text)
 		end
+		return hashtags
 	end
 
 
@@ -65,10 +71,11 @@ class Retweetbot
 
 
 			tweets.each do |tweet|
-				if ((tweet.in_reply_to_screen_name == "virtualegis" || tweet.in_reply_to_screen_name.nil?) && tweet.text[0, 2] != "RT" )																				#S'assure que ce n'est pas un retweet
+				if ((tweet.in_reply_to_screen_name == compte || tweet.in_reply_to_screen_name.nil?) && tweet.text[0, 2] != "RT" )									#S'assure que ce n'est pas un retweet
 					difTemps = calculDifTemps(tweet)
 					nbreJours = nombreJour(difTemps)
 					nbreHeures = nombreHeure(difTemps)
+
 					if (nbreJours == 0 && nbreHeures > 0)
 						begin
 							@@client.retweet!(tweet)
